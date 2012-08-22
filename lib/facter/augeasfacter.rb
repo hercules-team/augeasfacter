@@ -11,7 +11,9 @@ def path_label(path)
 end
 
 def get_value(aug, path, method)
+  Facter.debug("Retrieving value with method #{method}")
   if method == 'label'
+    Facter.debug("Path is #{path}")
     path_label(path)
   elsif method == 'value'
     aug.get(path)
@@ -44,7 +46,8 @@ aug.match("/files#{CONFIG}/*[label()!='#comment']").each do |fact|
   Facter.add(fact_name) do 
     setcode do
       if type == 'single'
-        get_value(aug, path, method) || nil
+        node = aug.match(path)[0]
+        get_value(aug, node, method) || nil
       elsif type == 'multiple'
         sep = aug.get("#{fact}/sep") || DEFAULT_SEP
         vals = Array.new()

@@ -1,10 +1,12 @@
 require 'augeas'
 aug = Augeas::open(nil, nil, Augeas::NO_LOAD)
 
-CONFIG = '/etc/puppet/augeasfacter.conf'
+CONFIG = File.join(Puppet[:confdir],"augeasfacter.conf")
 DEFAULT_TYPE = 'single'
 DEFAULT_METHOD = 'value'
 DEFAULT_SEP = ','
+
+Facter.debug("Config is #{CONFIG}")
 
 def path_label(path)
   path.split("/")[-1].split("[")[0]

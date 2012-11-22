@@ -6,7 +6,8 @@ This module provides a simple way of generating Facter facts using Augeas.
 Adding facts
 ------------
 
-Once this plugin is deployed on clients, you can create new files by adding to `/etc/puppet/augeasfacter.conf`.
+Once this plugin is deployed on clients, you can create new files by adding to `/etc/puppet/augeasfacter.conf`
+(replace with your value of `Puppet[:confdir]` if it is different).
 
 This configuration file is an INI file, similar to `puppet.conf`.
 

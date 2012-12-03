@@ -1,0 +1,5 @@
+[users]
+path = /files/etc/passwd/*
+type = multiple
+method = label
+sep = :

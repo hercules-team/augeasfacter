@@ -33,9 +33,18 @@ aug.transform(
   :name => 'Aug_Facts',
   :incl => CONFIG
 )
+# Also search pluginsynced conf
+Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf").each do |c|
+  Facter.debug("Loading augeas facts in #{c}")
+  aug.transform(
+    :lens => 'Puppet.lns',
+    :name => 'Aug_Facts',
+    :incl => c
+  )
+end
 aug.load!
 
-aug.match("/files#{CONFIG}/*[label()!='#comment']").each do |fact|
+aug.match("/files#{CONFIG}//*[path] | /files#{Puppet[:libdir]}/augeasfacter//*[path]").each do |fact|
   fact_name = path_label(fact)
   Facter.debug("Adding fact #{fact_name}")
   path  = aug.get("#{fact}/path")

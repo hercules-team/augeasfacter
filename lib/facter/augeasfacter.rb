@@ -11,11 +11,9 @@ def in_puppet?
 end
 
 confpath = ["/etc/augeasfacter.conf"]
-match = ["/files/etc/augeasfacter.conf//*[path]"]
 if in_puppet?
   Facter.debug("We are in Puppet")
-  confpath << Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf")
-  match << "/files#{Puppet[:libdir]}/augeasfacter//*[path]"
+  confpath += Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf")
 end
 DEFAULT_TYPE = 'single'
 DEFAULT_METHOD = 'value'
@@ -38,9 +36,6 @@ def get_value(aug, path, method)
   end
 end
 
-search_path = Facter.search_path().join(",")
-Facter.debug("Search path is #{search_path}")
-
 confpath.each do |c|
   Facter.debug("Loading augeas facts in #{c}")
   aug.transform(
@@ -50,8 +45,15 @@ confpath.each do |c|
   )
 end
 aug.load!
+# Check for errors
+confpath.each do |c|
+  if not aug.match("/augeas/files#{c}/error").empty?
+    Facter.warnonce "Failed to load Augeas facts: could not parse #{c}"
+  end
+end
 
-aug.match(match.join("|")).each do |fact|
+factspath = confpath.collect{|c| "/files#{c}//*[path]"}.join("|")
+aug.match(factspath).each do |fact|
   fact_name = path_label(fact)
   Facter.debug("Adding Augeas fact #{fact_name}")
   if in_puppet?

@@ -21,7 +21,7 @@ In order to do so, simply create `.conf` files in the `lib/augeasfacter/` direct
     └── {module}
         └── lib
             └── augeasfacter
-                |── foo.conf
+                ├── foo.conf
                 └── bar.conf
 
 Puppet will automatically sync the `augeasfacter` directory into its `:libdir` directory and `augeasfacter` will start using the declared facts immediatly.

@@ -10,7 +10,7 @@ def in_puppet?
   end
 end
 
-confpath = ["/etc/augeasfacter.conf"]
+confpath = [ ENV['AUGEASFACTER_CONF'] || "/etc/augeasfacter.conf"]
 if in_puppet?
   Facter.debug("We are in Puppet")
   confpath += Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf")

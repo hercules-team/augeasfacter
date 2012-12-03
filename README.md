@@ -7,7 +7,7 @@ This is a [Facter](http://projects.puppetlabs.com/projects/facter) plugin to dyn
 Using outside of Puppet
 ------------------------
 
-This plugin does not strictly depend on Puppet. If you want to use it outside of Puppet, simply use `/etc/augeasfacter.conf` as the configuration file for new facts.
+This plugin does not strictly depend on Puppet. If you want to use it outside of Puppet, simply use `/etc/augeasfacter.conf` (or the value of the `AUGEASFACTER_CONF` environment variable) as the configuration file for new facts.
 
 
 Using in Puppet

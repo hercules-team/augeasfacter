@@ -1,15 +1,36 @@
-puppet-augeasfacter
-===================
+augeasfacter
+=============
 
-This module provides a simple way of generating Facter facts using Augeas.
+This is a [Facter](http://projects.puppetlabs.com/projects/facter) plugin to dynamically declare facts using [Augeas](http://augeas.net), without using a single line of code.
 
-Adding facts
-------------
 
-Once this plugin is deployed on clients, you can create new files by adding to `/etc/puppet/augeasfacter.conf`
-(replace with your value of `Puppet[:confdir]` if it is different) or using pluginsync (see below).
+Using outside of Puppet
+------------------------
 
-This configuration file is an INI file, similar to `puppet.conf`.
+This plugin does not strictly depend on Puppet. If you want to use it outside of Puppet, simply use `/etc/augeasfacter.conf` as the configuration file for new facts.
+
+
+Using in Puppet
+----------------
+
+When used inside Puppet, the plugin will still load facts defined in `/etc/augeasfacter.conf`. However, it will allow you to deploy facts using i[pluginsync](http://docs.puppetlabs.com/guides/plugins_in_modules.html).
+
+In order to do so, simply create `.conf` files in the `lib/augeasfacter/` directory of your modules:
+
+    {modulepath}
+    └── {module}
+        └── lib
+            └── augeasfacter
+                |── foo.conf
+                └── bar.conf
+
+Puppet will automatically sync the `augeasfacter` directory into its `:libdir` directory and `augeasfacter` will start using the declared facts immediatly.
+
+
+Fact declaration format
+------------------------
+
+The configuration files (whether `/etc/augeasfacter.conf` or configuration files in `{module}/lib/augeasfacter/` are INI files, similar to `puppet.conf`.
 
 Here is an example of a simple fact:
 
@@ -37,10 +58,4 @@ You can also concatenate several values with a separator:
 will output the list of all users in `/etc/passwd`, concatenated with `:`.
 
 See `examples/augeasfacter.conf` for a sample configuration file.
-
-
-Using pluginsync
-----------------
-
-In addition to `/etc/puppet/augeasfacter.conf`, `augeasfacter` supports configuration files deployed using pluginsync. To use it, simply drop a `.conf` file in the `lib/augeasfacter/` directory of the puppet module of your choice, with the syntax described above. The configuration file will be automatically deployed by Puppet, and the fact(s) will be available immediatly for use in your catalog.
 

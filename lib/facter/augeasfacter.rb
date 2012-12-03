@@ -1,7 +1,13 @@
 require 'augeas'
 aug = Augeas::open(nil, nil, Augeas::NO_LOAD)
 
-CONFIG = File.join(Puppet[:confdir],"augeasfacter.conf")
+if defined?(PUPPETVERSION)
+  CONFIG = File.join(Puppet[:confdir],"augeasfacter.conf")
+  MATCH = "/files#{CONFIG}//*[path] | /files#{Puppet[:libdir]}/augeasfacter//*[path]"
+else
+  CONFIG = "/etc/augeasfacter.conf"
+  MATCH = "/files#{CONFIG}//*[path]"
+end
 DEFAULT_TYPE = 'single'
 DEFAULT_METHOD = 'value'
 DEFAULT_SEP = ','
@@ -34,17 +40,19 @@ aug.transform(
   :incl => CONFIG
 )
 # Also search pluginsynced conf
-Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf").each do |c|
-  Facter.debug("Loading augeas facts in #{c}")
-  aug.transform(
-    :lens => 'Puppet.lns',
-    :name => 'Aug_Facts',
-    :incl => c
-  )
+if defined?(PUPPETVERSION)
+  Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf").each do |c|
+    Facter.debug("Loading augeas facts in #{c}")
+    aug.transform(
+      :lens => 'Puppet.lns',
+      :name => 'Aug_Facts',
+      :incl => c
+    )
+  end
 end
 aug.load!
 
-aug.match("/files#{CONFIG}//*[path] | /files#{Puppet[:libdir]}/augeasfacter//*[path]").each do |fact|
+aug.match(MATCH).each do |fact|
   fact_name = path_label(fact)
   Facter.debug("Adding fact #{fact_name}")
   path  = aug.get("#{fact}/path")

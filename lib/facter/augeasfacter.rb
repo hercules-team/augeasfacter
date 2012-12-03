@@ -1,19 +1,25 @@
 require 'augeas'
 aug = Augeas::open(nil, nil, Augeas::NO_LOAD)
 
-IN_PUPPET = defined?(PUPPETVERSION)
+def in_puppet?
+  begin
+    Puppet.parse_config
+    true
+  rescue
+    false
+  end
+end
 
 confpath = ["/etc/augeasfacter.conf"]
 match = ["/files/etc/augeasfacter.conf//*[path]"]
-if IN_PUPPET
-  confpath.push(Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf"))
-  match.push("/files#{Puppet[:libdir]}/augeasfacter//*[path]")
+if in_puppet?
+  Facter.debug("We are in Puppet")
+  confpath << Dir.glob("#{Puppet[:libdir]}/augeasfacter/*.conf")
+  match << "/files#{Puppet[:libdir]}/augeasfacter//*[path]"
 end
 DEFAULT_TYPE = 'single'
 DEFAULT_METHOD = 'value'
 DEFAULT_SEP = ','
-
-#Facter.debug("Config is #{CONFIG}")
 
 def path_label(path)
   path.split("/")[-1].split("[")[0]
@@ -48,6 +54,9 @@ aug.load!
 aug.match(match.join("|")).each do |fact|
   fact_name = path_label(fact)
   Facter.debug("Adding fact #{fact_name}")
+  if in_puppet?
+    Puppet.notice("Adding fact #{fact_name}")
+  end
   path  = aug.get("#{fact}/path")
   unless path
     Facter.debug("No path specified for fact #{fact_name}. Ignoring.")

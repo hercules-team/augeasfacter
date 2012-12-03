@@ -7,7 +7,7 @@ Adding facts
 ------------
 
 Once this plugin is deployed on clients, you can create new files by adding to `/etc/puppet/augeasfacter.conf`
-(replace with your value of `Puppet[:confdir]` if it is different).
+(replace with your value of `Puppet[:confdir]` if it is different) or using pluginsync (see below).
 
 This configuration file is an INI file, similar to `puppet.conf`.
 
@@ -34,6 +34,13 @@ You can also concatenate several values with a separator:
     sep    = :
     method = label
 
-will output the list of all users in /etc/passwd, concatenated with `:`.
+will output the list of all users in `/etc/passwd`, concatenated with `:`.
 
-See examples/augeasfacter.conf for a sample configuration file.
+See `examples/augeasfacter.conf` for a sample configuration file.
+
+
+Using pluginsync
+----------------
+
+In addition to `/etc/puppet/augeasfacter.conf`, `augeasfacter` supports configuration files deployed using pluginsync. To use it, simply drop a `.conf` file in the `lib/augeasfacter/` directory of the puppet module of your choice, with the syntax described above. The configuration file will be automatically deployed by Puppet, and the fact(s) will be available immediatly for use in your catalog.
+

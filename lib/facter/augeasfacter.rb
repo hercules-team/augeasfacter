@@ -53,9 +53,9 @@ aug.load!
 
 aug.match(match.join("|")).each do |fact|
   fact_name = path_label(fact)
-  Facter.debug("Adding fact #{fact_name}")
+  Facter.debug("Adding Augeas fact #{fact_name}")
   if in_puppet?
-    Puppet.notice("Adding fact #{fact_name}")
+    Puppet.info("Adding Augeas fact #{fact_name}")
   end
   path  = aug.get("#{fact}/path")
   unless path

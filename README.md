@@ -13,7 +13,7 @@ This plugin does not strictly depend on Puppet. If you want to use it outside of
 Using in Puppet
 ----------------
 
-When used inside Puppet, the plugin will still load facts defined in `/etc/augeasfacter.conf`. However, it will allow you to deploy facts using i[pluginsync](http://docs.puppetlabs.com/guides/plugins_in_modules.html).
+When used inside Puppet, the plugin will still load facts defined in `/etc/augeasfacter.conf`. However, it will also allow you to deploy facts using [pluginsync](http://docs.puppetlabs.com/guides/plugins_in_modules.html).
 
 In order to do so, simply create `.conf` files in the `lib/augeasfacter/` directory of your modules:
 

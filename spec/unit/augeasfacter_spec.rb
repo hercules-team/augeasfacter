@@ -8,7 +8,7 @@ FACTERLIB = File.join(DIR, '../lib/facter')
 CONFDIR = '/etc/augeasfacter'
 
 def do_facter (conf, fact)
-  `AUGEAS_ROOT="#{FAKEROOT}" FACTERLIB="#{FACTERLIB}" AUGEASFACTER_CONF="#{CONFDIR}/#{conf}" facter #{fact}`
+  `AUGEAS_ROOT="#{FAKEROOT}" FACTERLIB="#{FACTERLIB}" AUGEASFACTER_CONF="#{CONFDIR}/#{conf}.conf" facter #{fact}`
 end
 
 describe "augeasfacter" do
@@ -51,6 +51,7 @@ describe "augeasfacter" do
     it "should return facts" do
       root_shell = do_facter('simple_value', 'root_shell')
 
+      Puppet[:libdir] = File.join(DIR, 'fixtures/root/etc')
       root_shell_fact = Puppet::Node::Facts.indirection.find(Puppet[:certname]).values['root_shell']
       root_shell_fact.should == '/bin/bash'
     end

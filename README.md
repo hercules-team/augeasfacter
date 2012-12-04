@@ -70,5 +70,5 @@ As with any Augeas-based tool, one might use a given lens on a specific file wit
     lens = Json.lns
     incl = /example.json
 
-This will associate `/example.json` to the `Json.lns` lens before doing the query on `path`.
+This will associate `/example.json` to the `Json.lns` lens before doing the query on `path`. Note that relative `path`s as used here will only work with Augeas 0.10.0 or greater, since `/augeas/context` is defined to `/files` by default in these versions.
 

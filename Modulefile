@@ -1,5 +1,5 @@
 name         'camptocamp-augeasfacter'
-version      '0.0.1'
+version      '0.1.0'
 source       'https://github.com/camptocamp/puppet-augeasfacter'
 author       'DevOps Team / Camptocamp'
 license      'GNU GPLv3'

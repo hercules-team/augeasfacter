@@ -2,9 +2,9 @@
 
 require 'spec_helper'
 
-DIR = File.expand_path(File.dirname(__FILE__))
-FAKEROOT = File.join(DIR, '../fixtures/root')
-FACTERLIB = File.join(DIR, '../../lib/facter')
+DIR = Pathname.new(__FILE__).parent.parent
+FAKEROOT = File.join(DIR, 'fixtures/root')
+FACTERLIB = File.join(DIR, '../lib/facter')
 CONFDIR = '/etc/augeasfacter'
 
 def do_facter (conf, fact)
@@ -44,6 +44,15 @@ describe "augeasfacter" do
     it "should use a specific lens" do
       output = do_facter('lens_incl', 'json_entry')
       output.chomp.should == 'foo'
+    end
+  end
+
+  context "from within Puppet" do
+    it "should return facts" do
+      root_shell = do_facter('simple_value', 'root_shell')
+
+      root_shell_fact = Puppet::Node::Facts.indirection.find(Puppet[:certname]).values['root_shell']
+      root_shell_fact.should == '/bin/bash'
     end
   end
 end

@@ -5,5 +5,17 @@ rvm:
 notifications:
   email:
    - raphael.pinson@camptocamp.com
+env:
+  - PUPPET_VERSION=0.25.0
+  - PUPPET_VERSION=2.6.0
+  - PUPPET_VERSION=2.7.0
+  - PUPPET_VERSION=3.0.0
+matrix:
+  exclude:
+    # No support for Ruby 1.9 before Puppet 2.7
+    - rvm: 1.9.3
+      env: PUPPET_VERSION=0.25.0
+    - rvm: 1.9.3
+      env: PUPPET_VERSION=2.6.0
 install:
   - ./.travis.sh

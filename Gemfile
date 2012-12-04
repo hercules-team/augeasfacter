@@ -6,10 +6,16 @@ else
   puppetversion = ['>= 0.25']
 end
 
+if ENV.key('FACTER_VERSION')
+  facterversion = "~> #{ENV['FACTER_VERSION']}"
+else
+  facterversion = ['= 1.6.13']
+end
+
 gem 'librarian-puppet'
 gem 'puppet', puppetversion
 gem 'ruby-augeas', '>= 0.3.0'
-gem 'facter', '1.6.13'
+gem 'facter', facterversion
 
 group :development do
   gem 'puppet-lint'

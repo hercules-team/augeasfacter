@@ -1,0 +1,4 @@
+[json_entry]
+path = /files/example.json/dict/entry[8]
+lens = Json.lns
+incl = /example.json

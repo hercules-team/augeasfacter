@@ -6,7 +6,7 @@ else
   puppetversion = ['>= 0.25']
 end
 
-if ENV.key('FACTER_VERSION')
+if ENV.key?('FACTER_VERSION')
   facterversion = "~> #{ENV['FACTER_VERSION']}"
 else
   facterversion = ['= 1.6.13']

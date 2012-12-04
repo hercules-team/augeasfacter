@@ -64,6 +64,16 @@ aug.match(factspath).each do |fact|
     Facter.debug("No path specified for fact #{fact_name}. Ignoring.")
     next
   end
+  if aug.match("#{fact}/lens").size == 1 and aug.match("#{fact}/incl").size == 1
+    lens = aug.get("#{fact}/lens")
+    incl = aug.get("#{fact}/incl")
+    aug.transform(
+      :lens => lens,
+      :name => fact_name,
+      :incl => incl
+    )
+    aug.load!
+  end
   type  = aug.get("#{fact}/type") || DEFAULT_TYPE
   method = aug.get("#{fact}/method") || DEFAULT_METHOD
   Facter.add(fact_name) do 

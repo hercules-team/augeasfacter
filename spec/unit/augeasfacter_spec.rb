@@ -39,4 +39,11 @@ describe "augeasfacter" do
       output.chomp.should == 'root:daemon:bin:sys:sync:games:man:lp:mail:news:uucp:proxy:www-data:backup:list:irc:gnats:nobody:libuuid:syslog:messagebus:colord:lightdm:avahi-autoipd:avahi:usbmux:kernoops:pulse:rtkit:saned:whoopsie:speech-dispatcher:hplip:sshd:guest-7Oz932:Debian-exim:ntp'
     end
   end
+
+  context "with lens and incl" do
+    it "should use a specific lens" do
+      output = do_facter('lens_incl', 'json_entry')
+      output.chomp.should == 'foo'
+    end
+  end
 end

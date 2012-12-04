@@ -59,3 +59,16 @@ will output the list of all users in `/etc/passwd`, concatenated with `:`.
 
 See `examples/augeasfacter.conf` for a sample configuration file.
 
+
+Loading a specific lens
+------------------------
+
+As with any Augeas-based tool, one might use a given lens on a specific file without having to modify the standard include statements of the lens. In order to achieve this, you can add `lens` and `incl` parameters to any fact, just as you would with the `augeas` type in Puppet:
+
+    [json_entry]
+    path = example.json/dict/entry[8]
+    lens = Json.lns
+    incl = /example.json
+
+This will associate `/example.json` to the `Json.lns` lens before doing the query on `path`.
+

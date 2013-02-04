@@ -42,7 +42,7 @@ When querying `facter` for the `augeasversion` fact, it will output the value of
 If you need to retrieve a node label rather than its value, you can use `method = label`:
 
     [user_1000]
-    path   = /files/etc/passwd/*[uid="1000"]
+    path   = /files/etc/passwd/*[uid='1000']
     method = label
 
 will output the name of the user with uid 1000.

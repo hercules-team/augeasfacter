@@ -2,12 +2,7 @@ require 'augeas'
 aug = Augeas::open(nil, nil, Augeas::NO_LOAD)
 
 def in_puppet?
-  begin
-    Puppet.parse_config
-    true
-  rescue
-    false
-  end
+  defined?(Puppet)
 end
 
 confpath = [ ENV['AUGEASFACTER_CONF'] || "/etc/augeasfacter.conf"]
